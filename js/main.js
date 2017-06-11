@@ -15,7 +15,7 @@ if (dev) {
     momPort = 15675;
     userName = "weatherTenantOne:cadWebApp";
     password = "cadWebApp";
-    topicToday = "78467/today";
+    topicToday = "78467/today"; //TODO /cep
     topicWeek = "78467/weekly";
     topicAlert = "78467/alert";
 }
@@ -23,6 +23,7 @@ if (dev) {
 function changeCity(plz) {
     //TODO use cookie as storage
     console.log("changeCity to " + plz);
+
     topicToday = topicToday.replace(/[\d]*/, plz);
     topicWeek = topicWeek.replace(/[\d]*/, plz);
     topicAlert = topicAlert.replace(/[\d]*/, plz);
@@ -112,8 +113,13 @@ client.onMessageArrived = onMessageArrived;
 
 // connect the client
 function connect() {
-    // client.disconnect();
-    client.connect({userName: userName, password: password, onSuccess: onConnect, onFailure: onFailure});
+    console.log("connect");
+    if (client.isConnected()) {
+        client.disconnect();
+    }
+    if (userName && password) {
+        client.connect({userName: userName, password: password, onSuccess: onConnect, onFailure: onFailure});
+    }
 }
 
 // called when the client connection fails
@@ -130,6 +136,7 @@ function onConnect() {
     client.subscribe(topicToday);
     client.subscribe(topicWeek);
     client.subscribe(topicAlert);
+    console.log("subscribed to: ", topicToday, topicWeek, topicAlert);
 }
 
 // called when the client loses its connection
@@ -142,10 +149,22 @@ function onConnectionLost(responseObject) {
 
 // called when a message arrives
 function onMessageArrived(message) {
-    console.log("onMessageArrived:" + message.payloadString);
-    $("#replace").append(message.payloadString);
-    //TODO parse, update html and canvas
+    console.log("onMessageArrived:" + message.payloadString + "received via: " + message.destinationName);
 
+    //TODO parse, update html and canvas
+    //$("#replace").append(message.payloadString);
+    switch (message.destinationName) {
+        case topicToday:
+            console.log("today");
+            break;
+        case topicWeek:
+            console.log("week");
+            break;
+        case topicAlert:
+            break;
+        default:
+            console.log("message received on unknown topic: " + message.destinationName);
+    }
 }
 
 /*
