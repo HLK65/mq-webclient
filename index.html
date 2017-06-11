@@ -65,28 +65,38 @@
                         </ul>
                     </li>
                 </ul>
-                <form class="navbar-form navbar-right" role="form" onsubmit="login()">
+                <form id="loginForm" class="navbar-form navbar-right" role="form" action="javascript:void(0)"> <!-- actions skips page reload on submit, handled in js -->
                     <div class="form-group">
-                        <input type="text" placeholder="Benutzername" class="form-control">
+                        <input id="username" type="text" placeholder="Benutzername" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <input type="password" placeholder="Kennwort" class="form-control">
+                        <input id="password" type="password" placeholder="Kennwort" class="form-control" required>
                     </div>
                     <button type="submit" class="btn btn-success">Anmelden</button>
                 </form>
+                <div id="alertNavbar" class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error:</span>
+                    Enter a valid email address
+                </div>
             </div><!--/.navbar-collapse -->
         </div>
     </nav>
 
     <!-- Weather today -->
     <div class="jumbotron">
+        <div id="alertNavbar" class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            Enter a valid email address
+        </div>
         <div class="container">
             <h1 id="city">City Name</h1>
             <h4 id="datetime"><!--filled by js--></h4>
             <div id="now">
                 <img class="weatherIcon" id="nowImage"
                      src="img/n01.png">
-                <span id="nowTemp">25 °C</span>
+                <p class="extent" id="nowTemp">25 °C</p>
             <p id="nowDescription">sonnig</p>
             <p id="nowWind">
                 Wind: <span id="nowWindSpeed">5km/h</span>
