@@ -1,5 +1,6 @@
 //variable declaration
-var momAddress, momPort, userName, password, topicToday, topicWeek, topicAlert;
+var momAddress, momPort, tenant, userName, password, topicToday, topicWeek, topicAlert;
+var todayData, todayDataLast, weekData, weekDataLast, alertData, alertDataLast;
 var dev = false;
 //mom access data
 if (dev) {
@@ -13,7 +14,8 @@ if (dev) {
 } else {
     momAddress = "ec2-34-210-210-13.us-west-2.compute.amazonaws.com";
     momPort = 15675;
-    userName = "weatherTenantOne:cadWebApp";
+    tenant = "weatherTenantOne:";
+    userName = tenant + "cadWebApp";
     password = "cadWebApp";
     topicToday = "78467/today"; //TODO /cep
     topicWeek = "78467/weekly";
@@ -116,6 +118,7 @@ function connect() {
     console.log("connect");
     if (client.isConnected()) {
         client.disconnect();
+        console.log("disconnected");
     }
     if (userName && password) {
         client.connect({userName: userName, password: password, onSuccess: onConnect, onFailure: onFailure});
@@ -143,19 +146,34 @@ function onConnect() {
 function onConnectionLost(responseObject) {
     if (responseObject.errorCode !== 0) {
         console.log("onConnectionLost:" + responseObject.errorMessage);
+        connect(); //try to reconnect
     }
-    connect(); //try to reconnect
 }
 
 // called when a message arrives
 function onMessageArrived(message) {
-    console.log("onMessageArrived:" + message.payloadString + "received via: " + message.destinationName);
+    //console.log("onMessageArrived:" + message.payloadString + "received via: " + message.destinationName);
 
     //TODO parse, update html and canvas
-    //$("#replace").append(message.payloadString);
+
     switch (message.destinationName) {
         case topicToday:
-            console.log("today");
+            console.log("today: " + message.payloadString);
+            todayData = message.payloadString;
+            if (todayData != todayDataLast) {
+                todayDataLast = todayData;
+                var data = JSON.parse(todayData);
+                $("#city").text(data.cityName);
+                $("#nowImage").attr("src", "img/" + data.weatherIcon + ".png");
+                $("#nowTemp").text(data.temperature);
+                $("#nowDescription").text(getWeatherDesc(data.currentWeatherId));
+                $("#nowWindSpeed").text(data.windspeed);
+                $("#nowWindDirection").text(data.windDeg);
+                $("#nowHumidity").text(data.humitidy) //todo typo in data received
+
+            } else {
+                console.log("same data received for today");
+            }
             break;
         case topicWeek:
             console.log("week");

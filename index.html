@@ -8,9 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <link rel="stylesheet" href="css/c3.css">
 
     <link rel="stylesheet" href="css/main.css">
@@ -41,23 +43,23 @@
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#" onclick="changeCity(24103)">Kiel</a></li><!-- SH -->
-                            <li><a href="#" onclick="changeCity(19055)">Schwerin</a></li><!-- MV -->
-                            <li><a href="#" onclick="changeCity(20095)">Hamburg</a></li><!-- HH -->
-                            <li><a href="#" onclick="changeCity(28215)">Bremen</a></li><!-- HB -->
-                            <li><a href="#" onclick="changeCity(30159)">Hannover</a></li><!-- NI -->
-                            <li><a href="#" onclick="changeCity(14467)">Potsdam</a></li><!-- BB -->
-                            <li><a href="#" onclick="changeCity(10785)">Berlin</a></li><!-- BE -->
-                            <li><a href="#" onclick="changeCity(39104)">Magdeburg</a></li><!-- ST -->
-                            <li><a href="#" onclick="changeCity(40213)">Düsseldorf</a></li><!-- NRW -->
-                            <li><a href="#" onclick="changeCity(65183)">Wiesbaden</a></li><!-- HE -->
-                            <li><a href="#" onclick="changeCity(99084)">Erfurt</a></li><!-- TH -->
-                            <li><a href="#" onclick="changeCity(01069)">Dresden</a></li><!-- SN -->
-                            <li><a href="#" onclick="changeCity(55116)">Mainz</a></li><!-- RP -->
-                            <li><a href="#" onclick="changeCity(66111)">Saarbrücken</a></li><!-- SL -->
-                            <li><a href="#" onclick="changeCity(70173)">Stuttgart</a></li><!-- BW -->
-                            <li><a href="#" onclick="changeCity(78467)">Konstanz</a></li><!-- BW -->
-                            <li><a href="#" onclick="changeCity(80331)">München</a></li><!-- BY -->
+                            <li><a href="#" onclick="changeCity('24103')">Kiel</a></li><!-- SH -->
+                            <li><a href="#" onclick="changeCity('19055')">Schwerin</a></li><!-- MV -->
+                            <li><a href="#" onclick="changeCity('20095')">Hamburg</a></li><!-- HH -->
+                            <li><a href="#" onclick="changeCity('28215')">Bremen</a></li><!-- HB -->
+                            <li><a href="#" onclick="changeCity('30159')">Hannover</a></li><!-- NI -->
+                            <li><a href="#" onclick="changeCity('14467')">Potsdam</a></li><!-- BB -->
+                            <li><a href="#" onclick="changeCity('10785')">Berlin</a></li><!-- BE -->
+                            <li><a href="#" onclick="changeCity('39104')">Magdeburg</a></li><!-- ST -->
+                            <li><a href="#" onclick="changeCity('40213')">Düsseldorf</a></li><!-- NRW -->
+                            <li><a href="#" onclick="changeCity('65183')">Wiesbaden</a></li><!-- HE -->
+                            <li><a href="#" onclick="changeCity('99084')">Erfurt</a></li><!-- TH -->
+                            <li><a href="#" onclick="changeCity('01069')">Dresden</a></li><!-- SN -->
+                            <li><a href="#" onclick="changeCity('55116')">Mainz</a></li><!-- RP -->
+                            <li><a href="#" onclick="changeCity('66111')">Saarbrücken</a></li><!-- SL -->
+                            <li><a href="#" onclick="changeCity('70173')">Stuttgart</a></li><!-- BW -->
+                            <li><a href="#" onclick="changeCity('78467')">Konstanz</a></li><!-- BW Konstanz -->
+                            <li><a href="#" onclick="changeCity('80331')">München</a></li><!-- BY -->
 
                             <!--<li role="separator" class="divider"></li>
                             <li class="dropdown-header">Nav header</li>
@@ -65,7 +67,8 @@
                         </ul>
                     </li>
                 </ul>
-                <form id="loginForm" class="navbar-form navbar-right" role="form" action="javascript:void(0)"> <!-- actions skips page reload on submit, handled in js -->
+                <form id="loginForm" class="navbar-form navbar-right" role="form" action="javascript:void(0)">
+                    <!-- actions skips page reload on submit, handled in js -->
                     <div class="form-group">
                         <input id="username" type="text" placeholder="Benutzername" class="form-control" required>
                     </div>
@@ -74,7 +77,7 @@
                     </div>
                     <button type="submit" class="btn btn-success">Anmelden</button>
                 </form>
-                <div id="alertNavbar" class="alert alert-danger" role="alert">
+                <div id="alertNavbar" class="alert alert-danger navbar-toggle collapsed" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     <span class="sr-only">Error:</span>
                     Enter a valid email address
@@ -85,24 +88,26 @@
 
     <!-- Weather today -->
     <div class="jumbotron">
-        <div id="alertNavbar" class="alert alert-danger" role="alert">
+        <div id="alertJumbotron" class="alert alert-info" role="alert">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <span class="sr-only">Error:</span>
-            Enter a valid email address
+            <span class="sr-only">Info:</span>
+            Bitte Anmelden
         </div>
         <div class="container">
             <h1 id="city">City Name</h1>
             <h4 id="datetime"><!--filled by js--></h4>
             <div id="now">
-                <img class="weatherIcon" id="nowImage"
-                     src="img/n01.png">
-                <p class="extent" id="nowTemp">25 °C</p>
-            <p id="nowDescription">sonnig</p>
-            <p id="nowWind">
-                Wind: <span id="nowWindSpeed">5km/h</span>
-                Richtung: <span id="nowWindDirection">NO</span>
-                Luftfeuchtigkeit: <span id="nowHumidity">45%</span>
-            </p>
+                <p>
+                    <img class="weatherIcon" id="nowImage"
+                         src="img/n01.png">
+                    <span class="extent" id="nowTemp">25</span> °C
+                </p>
+                <p id="nowDescription">sonnig</p>
+                <div id="nowDetails" class="row">
+                    <p class="col-sm-4">Wind: <span id="nowWindSpeed">5</span> km/h</p>
+                    <p class="col-sm-4">Richtung: <span id="nowWindDirection">NO</span>°</p>
+                    <p class="col-sm-4">Luftfeuchte: <span id="nowHumidity">45</span>%</p>
+                </div>
             </div>
         </div>
     </div>
@@ -184,7 +189,7 @@
 <script src="js/vendor/bootstrap.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
-
+<script src="js/weatherTranslation.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
