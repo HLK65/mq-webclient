@@ -79,8 +79,8 @@
                 </form>
                 <div id="alertNavbar" class="alert alert-danger navbar-toggle collapsed" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                    <span class="sr-only">Error:</span>
-                    Enter a valid email address
+                    <span class="sr-only">Alert Type:</span>
+                    Alert Text
                 </div>
             </div><!--/.navbar-collapse -->
         </div>
@@ -90,23 +90,23 @@
     <div class="jumbotron">
         <div id="alertJumbotron" class="alert alert-info" role="alert">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <span class="sr-only">Info:</span>
-            Bitte Anmelden
+            <span class="sr-only">Alert Type:</span>
+            Alert Text
         </div>
-        <div class="container">
+        <div class="container hidden" id="todayContainer">
             <h1 id="city">City Name</h1>
             <h4 id="datetime"><!--filled by js--></h4>
             <div id="now">
                 <p>
                     <img class="weatherIcon" id="nowImage"
                          src="img/n01.png">
-                    <span class="extent" id="nowTemp">25</span> °C
+                    <span class="extent" id="nowTemp">Temperature</span> °C
                 </p>
-                <p id="nowDescription">sonnig</p>
+                <p id="nowDescription">weatherDescription</p>
                 <div id="nowDetails" class="row">
-                    <p class="col-sm-4">Wind: <span id="nowWindSpeed">5</span> km/h</p>
-                    <p class="col-sm-4">Richtung: <span id="nowWindDirection">NO</span>°</p>
-                    <p class="col-sm-4">Luftfeuchte: <span id="nowHumidity">45</span>%</p>
+                    <p class="col-sm-4">Wind: <span id="nowWindSpeed">windSpeed</span> km/h</p>
+                    <p class="col-sm-4">Richtung: <span id="nowWindDirection">windDirection</span>°</p>
+                    <p class="col-sm-4">Luftfeuchte: <span id="nowHumidity">Humidity</span>%</p>
                 </div>
             </div>
         </div>
@@ -120,53 +120,53 @@
         <div id="chart"></div>
 
         <!-- Weather week details-->
-        <div class="row" id="weekDetails">
-            <div class="col-sm-2" id="day1">
-                <h4 class="weekday">Montag</h4>
+        <div class="row hidden" id="weekDetails">
+            <div class="col-sm-2" id="day0">
+                <h4 class="weekday">Wochentag</h4>
                 <p>
                     <img class="weatherIcon" src="img/loading.gif"><br>
-                    <span class="max">25 °C</span><br>
-                    <span class="min">15 °C</span>
+                    <span class="max">Temperatur</span> °C<br>
+                    <span class="min">Temperatur</span> °C
+                </p>
+            </div>
+            <div class="col-sm-2" id="day1">
+                <h4 class="weekday">Wochentag</h4>
+                <p>
+                    <img class="weatherIcon" src="img/loading.gif"><br>
+                    <span class="max">Temperatur</span> °C<br>
+                    <span class="min">Temperatur</span> °C
                 </p>
             </div>
             <div class="col-sm-2" id="day2">
-                <h4 class="weekday">Dienstag</h4>
+                <h4 class="weekday">Wochentag</h4>
                 <p>
                     <img class="weatherIcon" src="img/loading.gif"><br>
-                    <span class="max">25 °C</span><br>
-                    <span class="min">15 °C</span>
+                    <span class="max">Temperatur</span> °C<br>
+                    <span class="min">Temperatur</span> °C
                 </p>
             </div>
             <div class="col-sm-2" id="day3">
-                <h4 class="weekday">Mittwoch</h4>
+                <h4 class="weekday">Wochentag</h4>
                 <p>
                     <img class="weatherIcon" src="img/loading.gif"><br>
-                    <span class="max">25 °C</span><br>
-                    <span class="min">15 °C</span>
+                    <span class="max">Temperatur</span> °C<br>
+                    <span class="min">Temperatur</span> °C
                 </p>
             </div>
             <div class="col-sm-2" id="day4">
-                <h4 class="weekday">Donnerstag</h4>
+                <h4 class="weekday">Wochentag</h4>
                 <p>
                     <img class="weatherIcon" src="img/loading.gif"><br>
-                    <span class="max">25 °C</span><br>
-                    <span class="min">15 °C</span>
+                    <span class="max">Temperatur</span> °C<br>
+                    <span class="min">Temperatur</span> °C
                 </p>
             </div>
             <div class="col-sm-2" id="day5">
-                <h4 class="weekday">Freitag</h4>
+                <h4 class="weekday">Wochentag</h4>
                 <p>
                     <img class="weatherIcon" src="img/loading.gif"><br>
-                    <span class="max">25 °C</span><br>
-                    <span class="min">15 °C</span>
-                </p>
-            </div>
-            <div class="col-sm-2" id="day6">
-                <h4 class="weekday">Samstag</h4>
-                <p>
-                    <img class="weatherIcon" src="img/loading.gif"><br>
-                    <span class="max">25 °C</span><br>
-                    <span class="min">15 °C</span>
+                    <span class="max">Temperatur</span> °C<br>
+                    <span class="min">Temperatur</span> °C
                 </p>
             </div>
         </div>
@@ -175,21 +175,22 @@
     <hr>
 
     <footer>
-        <p>&copy; Company 2015</p>
+        <p>&copy; MILF Weather 2017</p>
     </footer>
 </div> <!-- /container -->
 </div>
 
+<!-- TODO use minified versions, use cdns and only serve local if cdn failed -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
-<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.js"><\/script>')</script>
 
 <script src="https://d3js.org/d3.v3.js"></script>
 <script src="js/vendor/c3.js"></script>
 
-<script src="js/vendor/bootstrap.min.js"></script>
+<script src="js/vendor/bootstrap.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
-<script src="js/weatherTranslation.js"></script>
+<script src="js/translations.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

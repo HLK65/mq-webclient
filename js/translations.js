@@ -1,3 +1,5 @@
+// returns weather description
+// expects number weather id
 function getWeatherDesc(currentWeather) {
     switch (currentWeather) {
         case 200:
@@ -46,7 +48,7 @@ function getWeatherDesc(currentWeather) {
             uebersetzt = "Regenegen";
             break;
         case 312:
-            uebersetzt = "Starker SprÃ¼hregel";
+            uebersetzt = "Starker Sprühregel";
             break;
         case 313:
             uebersetzt = "Starkregen mit Nieselregen";
@@ -154,13 +156,13 @@ function getWeatherDesc(currentWeather) {
             uebersetzt = "Schleierwolken";
             break;
         case 802:
-            uebersetzt = "auflockernd BewÃ¶lkt";
+            uebersetzt = "auflockernd Bewölkt";
             break;
         case 803:
-            uebersetzt = "abwechselnd BewÃ¶lkt";
+            uebersetzt = "abwechselnd Bewölkt";
             break;
         case 804:
-            uebersetzt = "BewÃ¶lkt";
+            uebersetzt = "Bewölkt";
             break;
         case 900:
             uebersetzt = "Tornado";
@@ -175,7 +177,7 @@ function getWeatherDesc(currentWeather) {
             uebersetzt = "kalt";
             break;
         case 904:
-            uebersetzt = "heiÃŸ";
+            uebersetzt = "heiß";
             break;
         case 905:
             uebersetzt = "windig";
@@ -221,4 +223,25 @@ function getWeatherDesc(currentWeather) {
             break;
     }
     return uebersetzt;
+}
+
+//returns day of week
+//expects number day of week 0-6
+function dayString(number) {
+    switch (number) {
+        case 0:
+            return "Sonntag";
+        case 1:
+            return "Montag";
+        case 2:
+            return "Dienstag";
+        case 3:
+            return "Mittwoch";
+        case 4:
+            return "Donnerstag";
+        case 5:
+            return "Freitag";
+        case 6:
+            return "Samstag";
+    }
 }

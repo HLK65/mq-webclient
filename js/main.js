@@ -17,8 +17,8 @@ if (dev) {
     tenant = "weatherTenantOne:";
     userName = tenant + "cadWebApp";
     password = "cadWebApp";
-    topicToday = "78467/today"; //TODO /cep
-    topicWeek = "78467/weekly";
+    topicToday = "78467/today/CEP"; //TODO /cep
+    topicWeek = "78467/weekly/CEP";
     topicAlert = "78467/alert";
 }
 
@@ -32,7 +32,6 @@ function changeCity(plz) {
 
     connect();
 }
-
 
 $("#loginForm").get(0).onsubmit = function login(event) {
     //TODO
@@ -63,46 +62,50 @@ setInterval(function () {
     $("#datetime").html(getDateTime());
 }, 250); //update every 250 ms
 
-var day1min = -25;
-var day1max = 0;
-var day2min = 5;
-var day2max = 25;
-var day3min = 22;
-var day3max = 39;
-var day4min = 12;
-var day4max = 17;
-var day5min = 8;
-var day5max = 27;
-var day6min = 12;
-var day6max = 22;
+function manageAlertBoxes(visible, type, msg) {
+    var navAlert = $("#alertNavbar").addClass("hidden");
+    var jumboAlert = $("#alertJumbotron").removeClass("hidden");
 
-var chart = c3.generate({
-    bindto: "#chart",
-    size: {
-        height: 200
-    },
-    data: {
-        columns: [
-            ["Höchsttemperatur (°C)", day1max, day2max, day3max, day4max, day5max, day6max],
-            ["Tiefsttemperatur (°C)", day1min, day2min, day3min, day4min, day5min, day6min]
-        ],
-        colors: {
-            "Höchsttemperatur (°C)": "red",
-            "Tiefsttemperatur (°C)": "blue"
+}
+manageAlertBoxes();
+
+function generateGraph(data) {
+    c3.generate({
+        bindto: "#chart",
+        size: {
+            height: 200
+        },
+        data: {
+            columns: [
+                ["Höchsttemperatur (°C)",
+                    data.days[0].temperatureMax, data.days[1].temperatureMax, data.days[2].temperatureMax,
+                    data.days[3].temperatureMax, data.days[4].temperatureMax, data.days[5].temperatureMax],
+                ["Tiefsttemperatur (°C)",
+                    data.days[0].temperatureMin, data.days[1].temperatureMin, data.days[2].temperatureMin,
+                    data.days[3].temperatureMin, data.days[4].temperatureMin, data.days[5].temperatureMin]
+            ],
+            colors: {
+                "Höchsttemperatur (°C)": "red",
+                "Tiefsttemperatur (°C)": "blue"
+            }
+        },
+        axis: {
+            x: {
+                type: "category",
+                categories: [
+                    dayString(new Date(data.days[0].date).getDay()), dayString(new Date(data.days[1].date).getDay()),
+                    dayString(new Date(data.days[2].date).getDay()), dayString(new Date(data.days[3].date).getDay()),
+                    dayString(new Date(data.days[4].date).getDay()), dayString(new Date(data.days[5].date).getDay())
+                ]
+            }
+        },
+        padding: {
+            //same values as in main.css #weekDetails
+            right: 30,
+            left: 30
         }
-    },
-    axis: {
-        x: {
-            type: "category",
-            categories: ["Day1", "Day2", "Day3", "Day4", "Day5", "Day6"]
-        }
-    },
-    padding: {
-        //same values as in main.css #weekDetails
-        right: 30,
-        left: 30
-    }
-});
+    });
+}
 
 
 // Create a client instance
@@ -135,7 +138,7 @@ function onFailure(error) {
 // called when the client connects
 function onConnect() {
     // Once a connection has been made, subscribe to topics
-    console.log("onConnect");
+    console.info("onConnect");
     client.subscribe(topicToday);
     client.subscribe(topicWeek);
     client.subscribe(topicAlert);
@@ -144,6 +147,7 @@ function onConnect() {
 
 // called when the client loses its connection
 function onConnectionLost(responseObject) {
+    console.info("onConnectionLost");
     if (responseObject.errorCode !== 0) {
         console.log("onConnectionLost:" + responseObject.errorMessage);
         connect(); //try to reconnect
@@ -152,13 +156,13 @@ function onConnectionLost(responseObject) {
 
 // called when a message arrives
 function onMessageArrived(message) {
-    //console.log("onMessageArrived:" + message.payloadString + "received via: " + message.destinationName);
+    console.info("onMessageArrived:" + message.payloadString + "received via: " + message.destinationName);
 
     //TODO parse, update html and canvas
 
     switch (message.destinationName) {
         case topicToday:
-            console.log("today: " + message.payloadString);
+            //console.log("today: ", message.payloadString);
             todayData = message.payloadString;
             if (todayData != todayDataLast) {
                 todayDataLast = todayData;
@@ -169,37 +173,41 @@ function onMessageArrived(message) {
                 $("#nowDescription").text(getWeatherDesc(data.currentWeatherId));
                 $("#nowWindSpeed").text(data.windspeed);
                 $("#nowWindDirection").text(data.windDeg);
-                $("#nowHumidity").text(data.humitidy) //todo typo in data received
+                $("#nowHumidity").text(data.humitidy); //TODO typo in data received
+
+                //show container
+                $("#todayContainer").removeClass("hidden");
 
             } else {
-                console.log("same data received for today");
+                console.log("no change in data received for today");
             }
             break;
         case topicWeek:
-            console.log("week");
+            // console.log("week", message.payloadString);
+            weekData = message.payloadString;
+            if (weekData != weekDataLast) {
+                weekDataLast = weekData;
+                var data = JSON.parse(weekData);
+                data.days.forEach(function (dataDay, index) {
+                    var dayOfWeek = new Date(dataDay.date).getDay(); //0 (sunday) to 6 (saturday)
+                    $("#day" + index + " .weekday").text(dayString(dayOfWeek));
+                    $("#day" + index + " .weatherIcon").attr("src", "img/" + dataDay.weatherIcon + ".png");
+                    $("#day" + index + " .max").text(dataDay.temperatureMax);
+                    $("#day" + index + " .min").text(dataDay.temperatureMin);
+                });
+
+                $("#weekDetails").removeClass("hidden");
+                // (re)render graph
+                generateGraph(data);
+            } else {
+                console.log("no change in data received for week");
+            }
+
             break;
         case topicAlert:
+            // TODO
             break;
         default:
             console.log("message received on unknown topic: " + message.destinationName);
     }
 }
-
-/*
- {
- "longitude": 9.1459,
- "latitude": 47.6923,
- "cityName": "Wollmatingen",
- "plz": "78467",
- "weatherIcon": "01n",
- "currentWeather": "Sky is Clear",
- "currentWeatherId": 800,
- "pressure": 1023,
- "humitidy": 71,
- "windspeed": 1.07,
- "windDeg": 242.003,
- "temperature": 11.26,
- "temperatureMax": 12.0,
- "temperatureMin": 11.0
- } - received via topic: 78467/datetime
- */
