@@ -21,10 +21,8 @@
 </head>
 <body>
 <?php
-// nutzen Sie getenv()
+// Get Environment Variables
 $ip = getenv('MOM');
-
-// ... oder einfache die superglobalen Arrays ($_SERVER oder $_ENV)
 $ip2 = $_SERVER['MOM'];
 $ip3 = $_ENV['MOM'];
 

@@ -129,7 +129,6 @@ function connect() {
             password: password,
             onSuccess: onConnect,
             onFailure: onFailure,
-            useSSL: true
         });
     }
 }
