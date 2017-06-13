@@ -34,12 +34,12 @@ setcookie("mom2", $ip2, time() + (86400 * 30), "/");
 setcookie("mom3", $ip3, time() + (86400 * 30), "/");
 */ ?>
 
-<script type="text/javascript">var momAddress = "<?php echo getenv("momAddress"); ?>";</script>
-<script type="text/javascript">var momPort = "<?php echo getenv("momPort"); ?>";</script>
-<script type="text/javascript">var tenant = "<?php echo getenv("tenant"); ?>";</script>
-<script type="text/javascript">var topicToday = "<?php echo getenv("78467/today/CEP"); ?>";</script>
-<script type="text/javascript">var topicWeek = "<?php echo getenv("78467/weekly/CEP"); ?>";</script>
-<script type="text/javascript">var topicAlert = "<?php echo getenv("78467/alert"); ?>";</script>
+<script type="text/javascript">momAddress = "<?php echo getenv("momAddress"); ?>";</script>
+<script type="text/javascript">momPort = "<?php echo getenv("momPort"); ?>";</script>
+<script type="text/javascript">tenant = "<?php echo getenv("tenant"); ?>";</script>
+<script type="text/javascript">topicToday = "<?php echo getenv("78467/today/CEP"); ?>";</script>
+<script type="text/javascript">topicWeek = "<?php echo getenv("78467/weekly/CEP"); ?>";</script>
+<script type="text/javascript">topicAlert = "<?php echo getenv("78467/alert"); ?>";</script>
 
 <div class="container">
     <!-- Navbar -->
