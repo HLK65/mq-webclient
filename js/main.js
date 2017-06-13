@@ -11,16 +11,17 @@ if (dev) {
     topicToday = "test";
     topicWeek = "test2";
     topicAlert = "test3";
-} else {
+}
+/*else {
     momAddress = "ec2-34-210-210-13.us-west-2.compute.amazonaws.com";
     momPort = 15675;
-    tenant = "weatherTenantOne:";
+ tenant = "weatherTenantOne";
     userName = tenant + "cadWebApp";
     password = "cadWebApp";
-    topicToday = "78467/today/CEP"; //TODO /cep
+ topicToday = "78467/today/CEP";
     topicWeek = "78467/weekly/CEP";
     topicAlert = "78467/alert";
-}
+ }*/
 
 function changeCity(plz) {
     //TODO use cookie as storage
@@ -109,7 +110,7 @@ function generateGraph(data) {
 
 
 // Create a client instance
-var client = new Paho.MQTT.Client(momAddress, momPort, "/ws", "weatherWebClient");
+var client = new Paho.MQTT.Client(momAddress, parseInt(momPort), "/ws", "weatherWebClient");
 
 // set callback handlers
 client.onConnectionLost = onConnectionLost;
@@ -124,6 +125,10 @@ function connect() {
         console.log("disconnected");
     }
     if (userName && password) {
+        // check if username includes tenant, if not add tenant
+        if (userName.includes(":") == false) {
+            userName = tenant + ":" + userName;
+        }
         client.connect({
             userName: userName,
             password: password,

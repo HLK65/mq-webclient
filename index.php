@@ -23,18 +23,23 @@
 </head>
 <body>
 <?php
-// Get Environment Variables
+/*// Get Environment Variables
 $ip = getenv('MOM');
+
 $ip2 = $_SERVER['MOM'];
 $ip3 = $_ENV['MOM'];
 
 setcookie("mom", $ip, time() + (86400 * 30), "/");
 setcookie("mom2", $ip2, time() + (86400 * 30), "/");
 setcookie("mom3", $ip3, time() + (86400 * 30), "/");
+*/ ?>
 
-?>
-
-<script type="text/javascript">var momjs = "<?php echo $_ENV["MOM"]; ?>";</script>
+<script type="text/javascript">var momAddress = "<?php echo getenv("momAddress"); ?>";</script>
+<script type="text/javascript">var momPort = "<?php echo getenv("momPort"); ?>";</script>
+<script type="text/javascript">var weatherTenantOne = "<?php echo getenv("tenant"); ?>";</script>
+<script type="text/javascript">var topicToday = "<?php echo getenv("78467/today/CEP"); ?>";</script>
+<script type="text/javascript">var topicWeek = "<?php echo getenv("78467/weekly/CEP"); ?>";</script>
+<script type="text/javascript">var topicAlert = "<?php echo getenv("78467/alert"); ?>";</script>
 
 <div class="container">
     <!-- Navbar -->
