@@ -31,7 +31,11 @@ $ip3 = $_ENV['MOM'];
 setcookie("mom", $ip, time() + (86400 * 30), "/");
 setcookie("mom2", $ip2, time() + (86400 * 30), "/");
 setcookie("mom3", $ip3, time() + (86400 * 30), "/");
+
 ?>
+
+<script type="text/javascript">var momjs = <?php echo $_ENV["MOM"]; ?>;</script>
+
 <div class="container">
     <!-- Navbar -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
