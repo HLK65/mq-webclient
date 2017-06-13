@@ -63,12 +63,14 @@ setInterval(function () {
     $("#datetime").html(getDateTime());
 }, 250); //update every 250 ms
 
+//TODO alert boxes
 function manageAlertBoxes(visible, type, msg) {
     var navAlert = $("#alertNavbar").addClass("hidden");
     var jumboAlert = $("#alertJumbotron").removeClass("hidden");
 
 }
 manageAlertBoxes();
+//TODO manage alerts
 
 function generateGraph(data) {
     c3.generate({
