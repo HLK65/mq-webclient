@@ -124,7 +124,13 @@ function connect() {
         console.log("disconnected");
     }
     if (userName && password) {
-        client.connect({userName: userName, password: password, onSuccess: onConnect, onFailure: onFailure});
+        client.connect({
+            userName: userName,
+            password: password,
+            onSuccess: onConnect,
+            onFailure: onFailure,
+            useSSL: true
+        });
     }
 }
 
