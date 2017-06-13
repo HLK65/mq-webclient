@@ -34,7 +34,7 @@ setcookie("mom3", $ip3, time() + (86400 * 30), "/");
 
 ?>
 
-<script type="text/javascript">var momjs = <?php echo $_ENV["MOM"]; ?>;</script>
+<script type="text/javascript">var momjs = "<?php echo $_ENV["MOM"]; ?>";</script>
 
 <div class="container">
     <!-- Navbar -->
