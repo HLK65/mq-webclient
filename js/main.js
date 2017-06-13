@@ -1,5 +1,5 @@
 //variable declaration
-var momAddress, momPort, tenant, userName, password, topicToday, topicWeek, topicAlert;
+//declared in php: momAddress, momPort, tenant, userName, password, topicToday, topicWeek, topicAlert;
 var todayData, todayDataLast, weekData, weekDataLast, alertData, alertDataLast;
 var dev = false;
 //mom access data
