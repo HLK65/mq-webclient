@@ -20,6 +20,14 @@
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
 <body>
+<?php
+// nutzen Sie getenv()
+$ip = getenv('MOM');
+
+// ... oder einfache die superglobalen Arrays ($_SERVER oder $_ENV)
+$ip2 = $_SERVER['MOM'];
+$ip3 = $_ENV['MOM']
+?>
 <div class="container">
     <!-- Navbar -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
