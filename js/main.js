@@ -179,7 +179,7 @@ function onMessageArrived(message) {
             if (todayData != todayDataLast) {
                 todayDataLast = todayData;
                 var data = JSON.parse(todayData);
-                $("#city").text(data.cityName);
+                // $("#city").text(data.cityName); //set by weekly data because api serves better city names there
                 $("#nowImage").attr("src", "img/" + data.weatherIcon + ".png");
                 $("#nowTemp").text(data.temperature);
                 $("#nowDescription").text(getWeatherDesc(data.currentWeatherId));
@@ -200,6 +200,7 @@ function onMessageArrived(message) {
             if (weekData != weekDataLast) {
                 weekDataLast = weekData;
                 var data = JSON.parse(weekData);
+                $("#city").text(data.days[0].cityName);
                 data.days.forEach(function (dataDay, index) {
                     var dayOfWeek = new Date(dataDay.date).getDay(); //0 (sunday) to 6 (saturday)
                     $("#day" + index + " .weekday").text(dayString(dayOfWeek));
