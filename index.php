@@ -23,16 +23,17 @@
 </head>
 <body>
 <?php
-/*// Get Environment Variables
-$ip = getenv('MOM');
+// Get Environment Variables
+//$ip = getenv('MOM');
+echo getenv("PATH");
 
-$ip2 = $_SERVER['MOM'];
-$ip3 = $_ENV['MOM'];
+//$ip2 = $_SERVER['MOM'];
+//$ip3 = $_ENV['MOM'];
 
-setcookie("mom", $ip, time() + (86400 * 30), "/");
-setcookie("mom2", $ip2, time() + (86400 * 30), "/");
-setcookie("mom3", $ip3, time() + (86400 * 30), "/");
-*/ ?>
+//setcookie("mom", $ip, time() + (86400 * 30), "/");
+//setcookie("mom2", $ip2, time() + (86400 * 30), "/");
+//setcookie("mom3", $ip3, time() + (86400 * 30), "/");
+?>
 
 <script type="text/javascript">momAddress = "<?php echo getenv("momAddress"); ?>";</script>
 <script type="text/javascript">momPort = "<?php echo getenv("momPort"); ?>";</script>

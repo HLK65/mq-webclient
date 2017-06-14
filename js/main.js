@@ -96,9 +96,9 @@ function generateGraph(data) {
             x: {
                 type: "category",
                 categories: [
-                    dayString(new Date(data.days[0].date).getDay()), dayString(new Date(data.days[1].date).getDay()),
-                    dayString(new Date(data.days[2].date).getDay()), dayString(new Date(data.days[3].date).getDay()),
-                    dayString(new Date(data.days[4].date).getDay()), dayString(new Date(data.days[5].date).getDay())
+                    getDayString(new Date(data.days[0].date).getDay()), getDayString(new Date(data.days[1].date).getDay()),
+                    getDayString(new Date(data.days[2].date).getDay()), getDayString(new Date(data.days[3].date).getDay()),
+                    getDayString(new Date(data.days[4].date).getDay()), getDayString(new Date(data.days[5].date).getDay())
                 ]
             }
         },
@@ -155,6 +155,11 @@ function onConnect() {
     client.subscribe(topicWeek);
     client.subscribe(topicAlert);
     console.log("subscribed to: ", topicToday, topicWeek, topicAlert);
+
+    //if navbar extended, collapse on successful login
+    if ($("#navbar").hasClass("in")) {
+        $(".navbar-toggle").click();
+    }
 }
 
 // called when the client loses its connection
@@ -203,7 +208,7 @@ function onMessageArrived(message) {
                 $("#city").text(data.days[0].cityName);
                 data.days.forEach(function (dataDay, index) {
                     var dayOfWeek = new Date(dataDay.date).getDay(); //0 (sunday) to 6 (saturday)
-                    $("#day" + index + " .weekday").text(dayString(dayOfWeek));
+                    $("#day" + index + " .weekday").text(getDayString(dayOfWeek));
                     $("#day" + index + " .weatherIcon").attr("src", "img/" + dataDay.weatherIcon + ".png");
                     $("#day" + index + " .max").text(dataDay.temperatureMax);
                     $("#day" + index + " .min").text(dataDay.temperatureMin);
@@ -219,6 +224,10 @@ function onMessageArrived(message) {
             break;
         case topicAlert:
             // TODO
+            //Example JSON: {"warning":"Temperature over 25 degree, please take medication if needed","title":"HearthRisk","code":"H3"}
+
+            var data = JSON.parse(message.payloadString);
+            var alertDesc = getAlertDesc(data.code);
             break;
         default:
             console.log("message received on unknown topic: " + message.destinationName);

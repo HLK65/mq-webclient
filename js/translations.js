@@ -227,8 +227,8 @@ function getWeatherDesc(currentWeather) {
 
 //returns day of week
 //expects number day of week 0-6
-function dayString(number) {
-    switch (number) {
+function getDayString(day) {
+    switch (day) {
         case 0:
             return "Sonntag";
         case 1:
@@ -244,4 +244,38 @@ function dayString(number) {
         case 6:
             return "Samstag";
     }
+}
+
+function getAlertDesc(id) {
+    // H1 Herzinfakt
+    // H2 Herinzinfakt
+    // S1 Badewetter
+    // W1 Frostchance
+    // W2 Arschkälte
+    // W3 starker Schneefall
+    // T1 Tropische Luftfeuchtigkeit
+    switch (id) {
+        case "H1": {
+            return "Starke Luftdruckschwankungen, nehmen Sie Ihre Medizin falls benötigt";
+        }
+        case "H2": {
+            return "Temperaturen über 25 °C, nehmen Sie Ihre Medizin falls benötigt";
+        }
+        case "S1": {
+            return "Ideales Badewetter";
+        }
+        case "W1": {
+            return "Achtung, Frostgefahr";
+        }
+        case "W2": {
+            return "Achtung, sehr niedrige Temperaturen. Ziehen Sie sich warm an.";
+        }
+        case "W3": {
+            return "Achtung, schwere Schneefälle.";
+        }
+        case "T1": {
+            return "Luftfeuchtigkeit über 90%";
+        }
+    }
+    console.log("getAlertDesc unknown alert: " + id)
 }
