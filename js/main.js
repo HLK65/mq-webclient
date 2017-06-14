@@ -13,14 +13,14 @@ if (dev) {
     topicAlert = "test3";
 }
 /*else {
-    momAddress = "ec2-34-210-210-13.us-west-2.compute.amazonaws.com";
-    momPort = 15675;
+ momAddress = "ec2-34-210-210-13.us-west-2.compute.amazonaws.com";
+ momPort = 15675;
  tenant = "weatherTenantOne";
-    userName = tenant + "cadWebApp";
-    password = "cadWebApp";
+ userName = tenant + "cadWebApp";
+ password = "cadWebApp";
  topicToday = "78467/today/CEP";
-    topicWeek = "78467/weekly/CEP";
-    topicAlert = "78467/alert";
+ topicWeek = "78467/weekly/CEP";
+ topicAlert = "78467/alert";
  }*/
 
 function changeCity(plz) {
@@ -156,9 +156,8 @@ function onConnect() {
     client.subscribe(topicAlert);
     console.log("subscribed to: ", topicToday, topicWeek, topicAlert);
 
-    //if navbar extended, collapse on successful login
-    if ($("#navbar").hasClass("in")) {
-        $(".navbar-toggle").click();
+    if ($(".navbar-collapse").is(":visible") && $(".navbar-toggle").is(":visible")) {
+        $(".navbar-collapse").collapse("hide");
     }
 }
 
