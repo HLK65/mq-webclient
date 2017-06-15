@@ -22,6 +22,7 @@
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
 <body>
+<!--read env variables and set as global vars-->
 <script type="text/javascript">momAddress = "<?php echo getenv("momAddress"); ?>";</script>
 <script type="text/javascript">momPort = "<?php echo getenv("momPort"); ?>";</script>
 <script type="text/javascript">tenant = "<?php echo getenv("tenant"); ?>";</script>
@@ -86,9 +87,7 @@
                     </div>
                     <button type="submit" class="btn btn-success">Anmelden</button>
                 </form>
-                <div id="alertNavbar" class="alert alert-danger navbar-toggle collapsed" role="alert">
-                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                    <span class="sr-only">Alert Type:</span>
+                <div class="alertGroup alert alert-danger navbar-toggle collapsed" role="alert">
                     Alert Text
                 </div>
             </div><!--/.navbar-collapse -->
@@ -97,9 +96,7 @@
 
     <!-- Weather today -->
     <div class="jumbotron">
-        <div id="alertJumbotron" class="alert alert-info" role="alert">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <span class="sr-only">Alert Type:</span>
+        <div class="alertGroup alert alert-info" role="alert">
             Alert Text
         </div>
         <div class="container hidden" id="todayContainer">
@@ -109,9 +106,9 @@
                 <p>
                     <img class="weatherIcon" id="nowImage"
                          src="img/n01.png">
-                    <span class="extent" id="nowTemp">Temperature</span> °C
+                    <span class="extent" id="nowTemp">Temperature</span> °C,
+                    <span id="nowDescription">weatherDescription</span>
                 </p>
-                <p id="nowDescription">weatherDescription</p>
                 <div id="nowDetails" class="row">
                     <p class="col-sm-4">Wind: <span id="nowWindSpeed">windSpeed</span> km/h</p>
                     <p class="col-sm-4">Richtung: <span id="nowWindDirection">windDirection</span>°</p>

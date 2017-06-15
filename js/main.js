@@ -12,31 +12,23 @@ if (dev) {
     topicWeek = "test2";
     topicAlert = "test3";
 }
-/*else {
- momAddress = "ec2-34-210-210-13.us-west-2.compute.amazonaws.com";
- momPort = 15675;
- tenant = "weatherTenantOne";
- userName = tenant + "cadWebApp";
- password = "cadWebApp";
- topicToday = "78467/today/CEP";
- topicWeek = "78467/weekly/CEP";
- topicAlert = "78467/alert";
- }*/
 
 function changeCity(plz) {
-    //TODO use cookie as storage
-    console.log("changeCity to " + plz);
+    //console.log("changeCity to " + plz);
 
     topicToday = topicToday.replace(/[\d]*/, plz);
     topicWeek = topicWeek.replace(/[\d]*/, plz);
     topicAlert = topicAlert.replace(/[\d]*/, plz);
 
-    connect();
+    if (client.isConnected()) {
+        connect();
+    } else {
+        manageAlertBoxes(true, "info", "Bitte melden Sie sich an.");
+    }
 }
 
 $("#loginForm").get(0).onsubmit = function login(event) {
-    //TODO
-    console.log("login ", event.toString(), $("#username").get(0).value, $("#password").get(0).value);
+    // console.log("login ", event.toString(), $("#username").get(0).value, $("#password").get(0).value);
 
     userName = $("#username").get(0).value;
     password = $("#password").get(0).value;
@@ -65,11 +57,28 @@ setInterval(function () {
 
 //TODO alert boxes
 function manageAlertBoxes(visible, type, msg) {
-    var navAlert = $("#alertNavbar").addClass("hidden");
-    var jumboAlert = $("#alertJumbotron").removeClass("hidden");
+    // console.log(visible, type, msg);
 
+    //show/hide alert Boxes
+    if (visible) {
+        //set type (success, info, warning, danger)
+        if (type == "success" | type == "info" | type == "warning" | type == "danger") {
+            $(".alertGroup").removeClass(function (index, className) {
+                return (className.match(/alert-\w*/ig)).join(' ');
+            }).addClass("alert-" + type)
+        }
+        ;
+
+        //set msg
+        $(".alertGroup").text(msg);
+
+        //show alert
+        $(".alertGroup").removeClass("hidden");
+    } else if (!visible) {
+        $(".alertGroup").addClass("hidden");
+    }
 }
-manageAlertBoxes();
+manageAlertBoxes(true, "info", "Bitte melden Sie sich an.");
 //TODO manage alerts
 
 function generateGraph(data) {
@@ -121,10 +130,10 @@ client.onMessageArrived = onMessageArrived;
 
 // connect the client
 function connect() {
-    console.log("connect");
+    // console.log("connect");
     if (client.isConnected()) {
         client.disconnect();
-        console.log("disconnected");
+        // console.log("disconnected");
     }
     if (userName && password) {
         // check if username includes tenant, if not add tenant
@@ -135,27 +144,36 @@ function connect() {
             userName: userName,
             password: password,
             onSuccess: onConnect,
-            onFailure: onFailure,
+            onFailure: onFailure
         });
     }
 }
 
 // called when the client connection fails
 function onFailure(error) {
-    //TODO
-    console.log("onError", error.errorMessage);
-    alert("login failed");
+    console.log("onError", error.errorMessage, error);
+    switch (error.errorCode) {
+        case 6:
+            manageAlertBoxes(true, "danger", "Verbindung fehlgeschlagen. Benutzername und Passwort stimmen nicht überein.");
+            break;
+        default:
+            manageAlertBoxes(true, "danger", "Verbindung fehlgeschlagen. Fehlermeldung: " + error.errorMessage);
+    }
 }
 
 // called when the client connects
 function onConnect() {
     // Once a connection has been made, subscribe to topics
     console.info("onConnect");
+
+    manageAlertBoxes(false);
+
     client.subscribe(topicToday);
     client.subscribe(topicWeek);
     client.subscribe(topicAlert);
-    console.log("subscribed to: ", topicToday, topicWeek, topicAlert);
+    // console.log("subscribed to: ", topicToday, topicWeek, topicAlert);
 
+    //if navbar is extended collapse on successful login
     if ($(".navbar-collapse").is(":visible") && $(".navbar-toggle").is(":visible")) {
         $(".navbar-collapse").collapse("hide");
     }
@@ -166,6 +184,7 @@ function onConnectionLost(responseObject) {
     console.info("onConnectionLost");
     if (responseObject.errorCode !== 0) {
         console.log("onConnectionLost:" + responseObject.errorMessage);
+        manageAlertBoxes(true, "danger", "Verbindung abgebrochen.");
         connect(); //try to reconnect
     }
 }
@@ -173,8 +192,6 @@ function onConnectionLost(responseObject) {
 // called when a message arrives
 function onMessageArrived(message) {
     console.info("onMessageArrived:" + message.payloadString + "received via: " + message.destinationName);
-
-    //TODO parse, update html and canvas
 
     switch (message.destinationName) {
         case topicToday:
@@ -195,7 +212,7 @@ function onMessageArrived(message) {
                 $("#todayContainer").removeClass("hidden");
 
             } else {
-                console.log("no change in data received for today");
+                // console.log("no change in data received for today");
             }
             break;
         case topicWeek:
@@ -208,7 +225,8 @@ function onMessageArrived(message) {
                 data.days.forEach(function (dataDay, index) {
                     var dayOfWeek = new Date(dataDay.date).getDay(); //0 (sunday) to 6 (saturday)
                     $("#day" + index + " .weekday").text(getDayString(dayOfWeek));
-                    $("#day" + index + " .weatherIcon").attr("src", "img/" + dataDay.weatherIcon + ".png");
+                    //dont use day weather icons for weekly, so replace n(ight) with d(ay)
+                    $("#day" + index + " .weatherIcon").attr("src", "img/" + dataDay.weatherIcon.replace("n", "d") + ".png");
                     $("#day" + index + " .max").text(dataDay.temperatureMax);
                     $("#day" + index + " .min").text(dataDay.temperatureMin);
                 });
@@ -217,16 +235,18 @@ function onMessageArrived(message) {
                 // (re)render graph
                 generateGraph(data);
             } else {
-                console.log("no change in data received for week");
+                // console.log("no change in data received for week");
             }
 
             break;
         case topicAlert:
-            // TODO
             //Example JSON: {"warning":"Temperature over 25 degree, please take medication if needed","title":"HearthRisk","code":"H3"}
 
             var data = JSON.parse(message.payloadString);
             var alertDesc = getAlertDesc(data.code);
+            if (alertDesc) {
+                manageAlertBoxes(true, "warning", alertDesc);
+            }
             break;
         default:
             console.log("message received on unknown topic: " + message.destinationName);
