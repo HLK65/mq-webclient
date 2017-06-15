@@ -191,7 +191,7 @@ function onConnectionLost(responseObject) {
 
 // called when a message arrives
 function onMessageArrived(message) {
-    console.info("onMessageArrived:" + message.payloadString + "received via: " + message.destinationName);
+    // console.info("onMessageArrived:" + message.payloadString + "received via: " + message.destinationName);
 
     switch (message.destinationName) {
         case topicToday:
