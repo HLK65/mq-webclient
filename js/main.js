@@ -206,7 +206,7 @@ function onMessageArrived(message) {
                 $("#nowDescription").text(getWeatherDesc(data.currentWeatherId));
                 $("#nowWindSpeed").text(data.windspeed);
                 $("#nowWindDirection").text(data.windDeg);
-                $("#nowHumidity").text(data.humitidy); //TODO typo in data received
+                $("#nowHumidity").text(data.humidity);
 
                 //show container
                 $("#todayContainer").removeClass("hidden");
