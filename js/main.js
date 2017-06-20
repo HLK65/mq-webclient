@@ -1,17 +1,6 @@
 //variable declaration
 //declared in php: momAddress, momPort, tenant, userName, password, topicToday, topicWeek, topicAlert;
-var todayData, todayDataLast, weekData, weekDataLast, alertData, alertDataLast;
-var dev = false;
-//mom access data
-if (dev) {
-    momAddress = "localhost";
-    momPort = 15675;
-    userName = "guest";
-    password = "guest";
-    topicToday = "test";
-    topicWeek = "test2";
-    topicAlert = "test3";
-}
+var todayData, todayDataLast, weekData, weekDataLast;
 
 function changeCity(plz) {
     //console.log("changeCity to " + plz);
@@ -41,6 +30,8 @@ $("#loginForm").get(0).onsubmit = function login(event) {
 
 function getDateTime() {
     var datetime = new Date();
+
+    // Create datetime String in german format
     /*var day = datetime.getDate().toString().length == 1 ? "0" + datetime.getDate() : datetime.getDate();
      var month = String(datetime.getMonth() + 1).length == 1 ? "0" + String(datetime.getMonth() + 1) : String(datetime.getMonth() + 1);
      var year = datetime.getFullYear().toString().length == 1 ? "0" + datetime.getFullYear() : datetime.getFullYear();
@@ -51,36 +42,37 @@ function getDateTime() {
     return datetime.toLocaleString();
 }
 
+// update datetime automatically
 setInterval(function () {
     $("#datetime").html(getDateTime());
 }, 250); //update every 250 ms
 
-//TODO alert boxes
 function manageAlertBoxes(visible, type, msg) {
-    // console.log(visible, type, msg);
+    // console.log("manage alert boxes", visible, type, msg);
 
     //show/hide alert Boxes
-    if (visible) {
+    if (visible === true) {
         //set type (success, info, warning, danger)
-        if (type == "success" | type == "info" | type == "warning" | type == "danger") {
+        if (type === "success" | type === "info" | type === "warning" | type === "danger") {
+            //remove all classes starting with "alert-"
             $(".alertGroup").removeClass(function (index, className) {
                 return (className.match(/alert-\w*/ig)).join(' ');
             }).addClass("alert-" + type)
         }
-        ;
 
         //set msg
         $(".alertGroup").text(msg);
 
         //show alert
         $(".alertGroup").removeClass("hidden");
-    } else if (!visible) {
+    } else {
         $(".alertGroup").addClass("hidden");
     }
 }
 manageAlertBoxes(true, "info", "Bitte melden Sie sich an.");
-//TODO manage alerts
 
+
+// renders the graph
 function generateGraph(data) {
     c3.generate({
         bindto: "#chart",
@@ -137,7 +129,7 @@ function connect() {
     }
     if (userName && password) {
         // check if username includes tenant, if not add tenant
-        if (userName.includes(":") == false) {
+        if (userName.includes(":") === false) {
             userName = tenant + ":" + userName;
         }
         client.connect({
@@ -154,7 +146,7 @@ function onFailure(error) {
     console.log("onError", error.errorMessage, error);
     switch (error.errorCode) {
         case 6:
-            manageAlertBoxes(true, "danger", "Verbindung fehlgeschlagen. Benutzername und Passwort stimmen nicht überein.");
+            manageAlertBoxes(true, "danger", "Verbindung fehlgeschlagen. Bitte überprüfen Sie Benutzername und Passwort.");
             break;
         default:
             manageAlertBoxes(true, "danger", "Verbindung fehlgeschlagen. Fehlermeldung: " + error.errorMessage);
@@ -184,7 +176,7 @@ function onConnectionLost(responseObject) {
     console.info("onConnectionLost");
     if (responseObject.errorCode !== 0) {
         console.log("onConnectionLost:" + responseObject.errorMessage);
-        manageAlertBoxes(true, "danger", "Verbindung abgebrochen.");
+        manageAlertBoxes(true, "danger", "Verbindung abgebrochen. Es wird versucht die Verbindung wieder herzustellen.");
         connect(); //try to reconnect
     }
 }
@@ -249,6 +241,6 @@ function onMessageArrived(message) {
             }
             break;
         default:
-            console.log("message received on unknown topic: " + message.destinationName);
+            console.log("message received on unhandled topic: " + message.destinationName);
     }
 }
