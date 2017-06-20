@@ -4,13 +4,19 @@ var todayData, todayDataLast, weekData, weekDataLast;
 
 function changeCity(plz) {
     //console.log("changeCity to " + plz);
+    // unsubscribe old topics
+    if (client.isConnected()) {
+        client.unsubscribe(topicToday);
+        client.unsubscribe(topicWeek);
+        client.unsubscribe(topicAlert);
+    }
 
     topicToday = topicToday.replace(/[\d]*/, plz);
     topicWeek = topicWeek.replace(/[\d]*/, plz);
     topicAlert = topicAlert.replace(/[\d]*/, plz);
 
     if (client.isConnected()) {
-        connect();
+        onConnect(); //subs to new topics, clears warnings of old topics, closes the nav bar if open
     } else {
         manageAlertBoxes(true, "info", "Bitte melden Sie sich an.");
     }
@@ -24,6 +30,7 @@ $("#loginForm").get(0).onsubmit = function login(event) {
 
     connect();
 
+    // prevent default actions implemented on browser side
     event.preventDefault();
     return false;
 };
@@ -53,7 +60,7 @@ function manageAlertBoxes(visible, type, msg) {
     //show/hide alert Boxes
     if (visible === true) {
         //set type (success, info, warning, danger)
-        if (type === "success" | type === "info" | type === "warning" | type === "danger") {
+        if (type === "success" || type === "info" || type === "warning" || type === "danger") {
             //remove all classes starting with "alert-"
             $(".alertGroup").removeClass(function (index, className) {
                 return (className.match(/alert-\w*/ig)).join(' ');
@@ -69,6 +76,7 @@ function manageAlertBoxes(visible, type, msg) {
         $(".alertGroup").addClass("hidden");
     }
 }
+
 manageAlertBoxes(true, "info", "Bitte melden Sie sich an.");
 
 
@@ -123,10 +131,7 @@ client.onMessageArrived = onMessageArrived;
 // connect the client
 function connect() {
     // console.log("connect");
-    if (client.isConnected()) {
-        client.disconnect();
-        // console.log("disconnected");
-    }
+
     if (userName && password) {
         // check if username includes tenant, if not add tenant
         if (userName.includes(":") === false) {
@@ -156,7 +161,7 @@ function onFailure(error) {
 // called when the client connects
 function onConnect() {
     // Once a connection has been made, subscribe to topics
-    console.info("onConnect");
+    // console.info("onConnect");
 
     manageAlertBoxes(false);
 

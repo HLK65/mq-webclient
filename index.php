@@ -23,12 +23,14 @@
 </head>
 <body>
 <!--read env variables and set as global vars-->
-<script type="text/javascript">momAddress = "<?php echo getenv("momAddress"); ?>";</script>
-<script type="text/javascript">momPort = "<?php echo getenv("momPort"); ?>";</script>
-<script type="text/javascript">tenant = "<?php echo getenv("tenant"); ?>";</script>
-<script type="text/javascript">topicToday = "<?php echo getenv("topicToday"); ?>";</script>
-<script type="text/javascript">topicWeek = "<?php echo getenv("topicWeek"); ?>";</script>
-<script type="text/javascript">topicAlert = "<?php echo getenv("topicAlert"); ?>";</script>
+<script type="text/javascript">
+    momAddress = "<?php echo getenv("momAddress"); ?>";
+    momPort = "<?php echo getenv("momPort"); ?>";
+    tenant = "<?php echo getenv("tenant"); ?>";
+    topicToday = "<?php echo getenv("topicToday"); ?>";
+    topicWeek = "<?php echo getenv("topicWeek"); ?>";
+    topicAlert = "<?php echo getenv("topicAlert"); ?>";
+</script>
 
 <div class="container">
     <!-- Navbar -->
