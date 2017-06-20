@@ -186,16 +186,23 @@
 </div> <!-- /container -->
 </div>
 
-<!-- TODO use minified versions, use cdns and only serve local if cdn failed -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
-<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.js"><\/script>')</script>
+<!-- load vendor libs of cdn's with local fallbacks -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
 
-<script src="https://d3js.org/d3.v3.js"></script>
-<script src="js/vendor/c3.js"></script>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script>window.d3 || document.write('<script src="js/vendor/d3.v3.min.js"><\/script>')</script>
 
-<script src="js/vendor/bootstrap.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.12/c3.min.js"></script>
+<script>window.c3 || document.write('<script src="js/vendor/c3.min.js"><\/script>')</script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script>typeof($.fn.popover == 'function') || document.write('<script src="js/vendor/bootstrap.min.js"><\/script>')</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
+<script>window.Paho || document.write('<script src="js/vendor/mqttws31.min.js"><\/script>')</script>
+
+<!-- load own javascript -->
 <script src="js/translations.js"></script>
 <script src="js/main.js"></script>
 </body>
