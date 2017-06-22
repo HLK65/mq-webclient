@@ -28,6 +28,10 @@ $("#loginForm").get(0).onsubmit = function login(event) {
     userName = $("#username").get(0).value;
     password = $("#password").get(0).value;
 
+    if (client.isConnected()) {
+        client.disconnect();
+    }
+
     connect();
 
     // prevent default actions implemented on browser side
@@ -82,41 +86,46 @@ manageAlertBoxes(true, "info", "Bitte melden Sie sich an.");
 
 // renders the graph
 function generateGraph(data) {
-    c3.generate({
-        bindto: "#chart",
-        size: {
-            height: 200
-        },
-        data: {
-            columns: [
-                ["Höchsttemperatur (°C)",
-                    data.days[0].temperatureMax, data.days[1].temperatureMax, data.days[2].temperatureMax,
-                    data.days[3].temperatureMax, data.days[4].temperatureMax, data.days[5].temperatureMax],
-                ["Tiefsttemperatur (°C)",
-                    data.days[0].temperatureMin, data.days[1].temperatureMin, data.days[2].temperatureMin,
-                    data.days[3].temperatureMin, data.days[4].temperatureMin, data.days[5].temperatureMin]
-            ],
-            colors: {
-                "Höchsttemperatur (°C)": "red",
-                "Tiefsttemperatur (°C)": "blue"
+    try {
+        c3.generate({
+            bindto: "#chart",
+            size: {
+                height: 200
+            },
+            data: {
+                columns: [
+                    ["Höchsttemperatur (°C)",
+                        data.days[0].temperatureMax, data.days[1].temperatureMax, data.days[2].temperatureMax,
+                        data.days[3].temperatureMax, data.days[4].temperatureMax, data.days[5].temperatureMax],
+                    ["Tiefsttemperatur (°C)",
+                        data.days[0].temperatureMin, data.days[1].temperatureMin, data.days[2].temperatureMin,
+                        data.days[3].temperatureMin, data.days[4].temperatureMin, data.days[5].temperatureMin]
+                ],
+                colors: {
+                    "Höchsttemperatur (°C)": "red",
+                    "Tiefsttemperatur (°C)": "blue"
+                }
+            },
+            axis: {
+                x: {
+                    type: "category",
+                    categories: [
+                        getDayString(new Date(data.days[0].date).getDay()), getDayString(new Date(data.days[1].date).getDay()),
+                        getDayString(new Date(data.days[2].date).getDay()), getDayString(new Date(data.days[3].date).getDay()),
+                        getDayString(new Date(data.days[4].date).getDay()), getDayString(new Date(data.days[5].date).getDay())
+                    ]
+                }
+            },
+            padding: {
+                //same values as in main.css #weekDetails
+                right: 30,
+                left: 30
             }
-        },
-        axis: {
-            x: {
-                type: "category",
-                categories: [
-                    getDayString(new Date(data.days[0].date).getDay()), getDayString(new Date(data.days[1].date).getDay()),
-                    getDayString(new Date(data.days[2].date).getDay()), getDayString(new Date(data.days[3].date).getDay()),
-                    getDayString(new Date(data.days[4].date).getDay()), getDayString(new Date(data.days[5].date).getDay())
-                ]
-            }
-        },
-        padding: {
-            //same values as in main.css #weekDetails
-            right: 30,
-            left: 30
-        }
-    });
+        });
+    }
+    catch (err) {
+        console.log(err.message);
+    }
 }
 
 
@@ -178,7 +187,7 @@ function onConnect() {
 
 // called when the client loses its connection
 function onConnectionLost(responseObject) {
-    console.info("onConnectionLost");
+    // errorCode 0 means disconncted by client
     if (responseObject.errorCode !== 0) {
         console.log("onConnectionLost:" + responseObject.errorMessage);
         manageAlertBoxes(true, "danger", "Verbindung abgebrochen. Es wird versucht die Verbindung wieder herzustellen.");
