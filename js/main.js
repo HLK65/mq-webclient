@@ -17,8 +17,6 @@ function changeCity(plz) {
 
     if (client.isConnected()) {
         onConnect(); //subs to new topics, clears warnings of old topics, closes the nav bar if open
-    } else {
-        manageAlertBoxes(true, "info", "Bitte melden Sie sich an.");
     }
 }
 
@@ -96,10 +94,12 @@ function generateGraph(data) {
                 columns: [
                     ["Höchsttemperatur (°C)",
                         data.days[0].temperatureMax, data.days[1].temperatureMax, data.days[2].temperatureMax,
-                        data.days[3].temperatureMax, data.days[4].temperatureMax, data.days[5].temperatureMax],
+                        data.days[3].temperatureMax
+                    ],
                     ["Tiefsttemperatur (°C)",
                         data.days[0].temperatureMin, data.days[1].temperatureMin, data.days[2].temperatureMin,
-                        data.days[3].temperatureMin, data.days[4].temperatureMin, data.days[5].temperatureMin]
+                        data.days[3].temperatureMin
+                    ]
                 ],
                 colors: {
                     "Höchsttemperatur (°C)": "red",
@@ -111,8 +111,7 @@ function generateGraph(data) {
                     type: "category",
                     categories: [
                         getDayString(new Date(data.days[0].date).getDay()), getDayString(new Date(data.days[1].date).getDay()),
-                        getDayString(new Date(data.days[2].date).getDay()), getDayString(new Date(data.days[3].date).getDay()),
-                        getDayString(new Date(data.days[4].date).getDay()), getDayString(new Date(data.days[5].date).getDay())
+                        getDayString(new Date(data.days[2].date).getDay()), getDayString(new Date(data.days[3].date).getDay())
                     ]
                 }
             },
@@ -187,18 +186,30 @@ function onConnect() {
 
 // called when the client loses its connection
 function onConnectionLost(responseObject) {
-    // errorCode 0 means disconncted by client
-    if (responseObject.errorCode !== 0) {
-        console.log("onConnectionLost:" + responseObject.errorMessage);
-        manageAlertBoxes(true, "danger", "Verbindung abgebrochen. Es wird versucht die Verbindung wieder herzustellen.");
-        connect(); //try to reconnect
+    switch (responseObject.errorCode) {
+        // errorCode 0 means disconnected by client
+        case 0:
+            break;
+        // errorCode 8 means Socket closed
+        case 8:
+            connect(); // try toreconnect. Should it fail the onFailure handler will show a message to the user
+            break;
+        default:
+            console.log("onConnectionLost:" + responseObject.errorMessage, responseObject.errorCode);
+            connect(); // try to reconnect. Should it fail the onFailure handler will show a message to the user
+
+            // after 5 secs check if connection could be established, if not retry one more time
+            window.setTimeout(function () {
+                if (!client.isConnected()) {
+                    connect();
+                }
+            }, 5000)
     }
 }
 
 // called when a message arrives
 function onMessageArrived(message) {
     // console.info("onMessageArrived:" + message.payloadString + "received via: " + message.destinationName);
-
     switch (message.destinationName) {
         case topicToday:
             //console.log("today: ", message.payloadString);
@@ -237,9 +248,10 @@ function onMessageArrived(message) {
                     $("#day" + index + " .min").text(dataDay.temperatureMin);
                 });
 
-                $("#weekDetails").removeClass("hidden");
                 // (re)render graph
                 generateGraph(data);
+
+                $("#weekDetails").removeClass("hidden");  //unhide weekly forcast
             } else {
                 // console.log("no change in data received for week");
             }
@@ -257,4 +269,5 @@ function onMessageArrived(message) {
         default:
             console.log("message received on unhandled topic: " + message.destinationName);
     }
+
 }

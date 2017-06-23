@@ -129,7 +129,7 @@
 
         <!-- Weather week details-->
         <div class="row hidden" id="weekDetails">
-            <div class="col-sm-2" id="day0">
+            <div class="col-sm-3" id="day0">
                 <h4 class="weekday">Wochentag</h4>
                 <p>
                     <img class="weatherIcon" src="img/loading.gif"><br>
@@ -137,7 +137,7 @@
                     <span class="min">Temperatur</span> °C
                 </p>
             </div>
-            <div class="col-sm-2" id="day1">
+            <div class="col-sm-3" id="day1">
                 <h4 class="weekday">Wochentag</h4>
                 <p>
                     <img class="weatherIcon" src="img/loading.gif"><br>
@@ -145,7 +145,7 @@
                     <span class="min">Temperatur</span> °C
                 </p>
             </div>
-            <div class="col-sm-2" id="day2">
+            <div class="col-sm-3" id="day2">
                 <h4 class="weekday">Wochentag</h4>
                 <p>
                     <img class="weatherIcon" src="img/loading.gif"><br>
@@ -153,23 +153,7 @@
                     <span class="min">Temperatur</span> °C
                 </p>
             </div>
-            <div class="col-sm-2" id="day3">
-                <h4 class="weekday">Wochentag</h4>
-                <p>
-                    <img class="weatherIcon" src="img/loading.gif"><br>
-                    <span class="max">Temperatur</span> °C<br>
-                    <span class="min">Temperatur</span> °C
-                </p>
-            </div>
-            <div class="col-sm-2" id="day4">
-                <h4 class="weekday">Wochentag</h4>
-                <p>
-                    <img class="weatherIcon" src="img/loading.gif"><br>
-                    <span class="max">Temperatur</span> °C<br>
-                    <span class="min">Temperatur</span> °C
-                </p>
-            </div>
-            <div class="col-sm-2" id="day5">
+            <div class="col-sm-3" id="day3">
                 <h4 class="weekday">Wochentag</h4>
                 <p>
                     <img class="weatherIcon" src="img/loading.gif"><br>
